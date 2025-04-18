@@ -40,9 +40,51 @@ public class MatchCards {
   ArrayList<Card> cardSet;
   ImageIcon cardBackImageIcon;
 
+  int boardWidth = columns * cardWidth;
+  int boardheight = rows * cardHeight;
+
+  JFrame frame = new JFrame("Pokemon Match Cards");
+  JLabel textLabel = new JLabel();
+  JPanel textPanel = new JPanel();
+  JPanel boardPanel = new JPanel();
+
+  int errorCount = 0;
+  ArrayList<JButton> board;
+
   MatchCards() {
     setupCards();
     shuffleCards();
+
+    // frame.setVisible(true);
+    frame.setSize(boardWidth, boardheight);
+    frame.setLocationRelativeTo(null);
+    frame.setResizable(false);
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    textLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+    textLabel.setHorizontalAlignment(JLabel.CENTER);
+    textLabel.setText("Errors " + Integer.toString(errorCount));
+
+    textPanel.setPreferredSize(new Dimension(boardWidth, 30));
+    textPanel.add(textLabel);
+    frame.add(textPanel, BorderLayout.NORTH);
+
+    // card game board
+    board = new ArrayList<>();
+    boardPanel.setLayout(new GridLayout(rows, columns));
+    for (int i = 0; i < cardSet.size(); i++) {
+      JButton tile = new JButton();
+      tile.setPreferredSize(new Dimension(cardWidth, cardHeight));
+      tile.setOpaque(true);
+      tile.setIcon(cardSet.get(i).cardImageIcon);
+      tile.setFocusable(false);
+      board.add(tile);
+      boardPanel.add(tile);
+    }
+    frame.add(boardPanel);
+
+    frame.pack();
+    frame.setVisible(true);
   }
 
   void setupCards() {
